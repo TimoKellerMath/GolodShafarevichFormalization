@@ -1,0 +1,22 @@
+name = "GSArith"
+defaultTargets = ["GSArith"]
+# Pure Lean package; module outputs are reusable across platforms.
+platformIndependent = true
+
+# TauCeti pins Mathlib (see its lake-manifest.json); we inherit that pin rather than
+# requiring Mathlib separately, so the two can never diverge.  Bump `rev` deliberately.
+[[require]]
+name = "TauCeti"
+git = "https://github.com/TauCetiProject/TauCeti"
+rev = "3cbd4f4ca3aa18147b5db45b15b007d3234c84c0"
+
+# The formalization.  The glob is authoritative: every GSArith/**/*.lean is built.
+[[lean_lib]]
+name = "GSArith"
+globs = ["GSArith.*"]
+leanOptions = { weak.linter.mathlibStandardSet = true }
+
+# Axiom audit: `lake exe axioms` (after `lake build`).  See scripts/Axioms.lean.
+[[lean_exe]]
+name = "axioms"
+root = "scripts.Axioms"
